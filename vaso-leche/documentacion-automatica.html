@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Automática - SiamSoft Vaso de Leche</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link href="assets/iconos/mainico.png" rel="shortcut icon" type="image/png" />
+    <style>
+        /* ========== VARIABLES CSS ========== */
+        :root {
+            --primary: #005f73;
+            --secondary: #0a9396;
+            --accent: #94d2bd;
+            --dark: #001219;
+            --light: #e9d8a6;
+            --white: #ffffff;
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+            --radius: 8px;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        /* ========== RESET Y ESTILOS BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* ========== UTILIDADES ========== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--text-color);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(148, 210, 189, 0.3);
+        }
+
+        .btn-outline {
+            background: var(--primary);
+            border: 2px solid white;
+            color: white;
+        }
+
+        /* ========== ANIMACIONES ========== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeSlideInLeft {
+            from {
+                transform: translateY(-50%) translateX(-40px);
+                opacity: 0;
+                filter: blur(5px);
+            }
+
+            to {
+                transform: translateY(-50%) translateX(0);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.3s;
+        }
+
+        /* ============================================= */
+        /* BARRA SOCIAL LATERAL */
+        /* ============================================= */
+
+        .social-bar-container {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(-30px);
+            z-index: 2000;
+            opacity: 0;
+            animation: fadeSlideInLeft 1s ease-out forwards;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeSlideInLeft {
+            from {
+                transform: translateY(-50%) translateX(-40px);
+                opacity: 0;
+                filter: blur(5px);
+            }
+
+            to {
+                transform: translateY(-50%) translateX(0);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        .social-bar {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .social-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            transition: all 0.4s ease;
+            text-decoration: none;
+        }
+
+        .social-link i {
+            font-size: 20px;
+            color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .social-text {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 5px 10px;
+            border-radius: 0 4px 4px 0;
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            margin-left: 55px;
+        }
+
+        .social-link:hover {
+            width: 60px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .social-link:hover .social-text {
+            opacity: 1;
+            margin-left: 10px;
+        }
+
+        /* Colores específicos para cada red social */
+        .social-facebook {
+            background-color: #1877f2;
+        }
+
+        .social-tiktok {
+            background-color: #000000;
+        }
+
+        .social-twitter {
+            background-color: #1da1f2;
+        }
+
+        .social-youtube {
+            background-color: #ff0000;
+        }
+
+        .social-web {
+            background-color: #4caf50;
+        }
+
+        /* ========== BARRA DE NAVEGACIÓN ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.5s ease;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 0px 0px 40px 40px;
+            height: 80px;
+        }
+
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 0.8rem 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: rgb(51, 50, 50);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            text-shadow: 1px 1px 3px rgba(250, 247, 247, 0.5);
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: rgb(14, 12, 12);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Menú hamburguesa */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .hamburger-menu .bar {
+            height: 3px;
+            width: 100%;
+            background-color: #333;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 180px 20px 100px;
+            margin-top: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 91vh;
+            position: relative;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0.05;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            width: 100%;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            width: 100%;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .dashboard-preview {
+            border-radius: 12px;
+            transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+            transition: all 0.5s ease;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3), var(--shadow-md);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-preview:hover {
+            transform: perspective(1000px) rotateY(0) rotateX(0);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5),
+                0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-preview img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dashboard-dot:nth-child(1) {
+            background: #ff5f56;
+        }
+
+        .dashboard-dot:nth-child(2) {
+            background: #ffbd2e;
+        }
+
+        .dashboard-dot:nth-child(3) {
+            background: #27ca3f;
+        }
+
+        .dashboard-content {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 8px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        /* ========== DOCUMENTS SECTION ========== */
+        .documents {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .document-card {
+            background: var(--bg-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .document-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .document-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* ========== PROCESS SECTION ========== */
+        .process {
+            padding: 5rem 0;
+            background: var(--light);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .process-step:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--secondary);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* ========== DEMO SECTION ========== */
+        .demo {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .demo-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .demo-text {
+            flex: 1;
+        }
+
+        .demo-text h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .demo-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .demo-image img {
+            max-width: 100%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ========== FORMATS SECTION ========== */
+        .formats {
+            padding: 5rem 0;
+            background: var(--light);
+        }
+
+        .formats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .format-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .format-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .format-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+
+        /* ========== GALERÍA DE IMÁGENES ========== */
+        .image-gallery {
+            padding: 5rem 0;
+            background: var(--light);
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            aspect-ratio: 1 / 1.4;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+
+        /* ========== BENEFITS SECTION ========== */
+        .benefits {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .benefits-list {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .benefits-list li {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-color);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .benefits-list li i {
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+
+        
+
+        /* ========== CTA SECTION ========== */
+        .cta {
+            padding: 5rem 0;
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .footer-social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(29, 201, 231, 0.2);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .footer-social-links a:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .demo-content {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.8rem 5%;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.5s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                color: white;
+                padding: 0.5rem 1rem;
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+
+            .hamburger-menu.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .hamburger-menu.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger-menu.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .process-steps {
+                flex-direction: column;
+            }
+
+            .process-step:not(:last-child):after {
+                display: none;
+            }
+
+            .social-bar-container {
+                top: auto;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                animation: fadeSlideInBottom 1s ease-out forwards;
+                animation-delay: 0.4s;
+            }
+
+            @keyframes fadeSlideInBottom {
+                from {
+                    transform: translateX(-50%) translateY(120px);
+                    opacity: 0;
+                    filter: blur(5px);
+                }
+
+                to {
+                    transform: translateX(-50%) translateY(0);
+                    opacity: 1;
+                    filter: blur(0);
+                }
+            }
+
+            .social-bar {
+                flex-direction: row;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                padding: 5px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+                margin: 0 5px;
+            }
+
+            .social-link:hover {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+            }
+
+            .social-text {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-column {
+                min-width: 100%;
+                text-align: center;
+            }
+
+            .footer-column h3:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 150px 20px 80px;
+            }
+
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========== BARRA SOCIAL IZQUIERDA ========== -->
+    <div class="social-bar-container">
+        <div class="social-bar">
+            <a href="https://www.facebook.com/SIAMSoftSftwareparamunicipalidades/" target="_blank"
+                class="social-link social-facebook">
+                <i class="fab fa-facebook-f"></i>
+                <span class="social-text">Facebook</span>
+            </a>
+            <a href="https://www.tiktok.com/@siamsoft_peru" target="_blank" class="social-link social-tiktok">
+                <i class="fab fa-tiktok"></i>
+                <span class="social-text">TikTok</span>
+            </a>
+            <a href="https://x.com/siamsoft" target="_blank" class="social-link social-twitter">
+                <i class="fab fa-twitter"></i>
+                <span class="social-text">Twitter</span>
+            </a>
+            <a href="https://www.youtube.com/@siamsoft" target="_blank" class="social-link social-youtube">
+                <i class="fab fa-youtube"></i>
+                <span class="social-text">YouTube</span>
+            </a>
+            <a href="https://nixi32.github.io/web/proyecto/prueba.html" class="social-link social-web">
+                <i class="fas fa-globe"></i>
+                <span class="social-text">Web</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ========== BARRA DE NAVEGACIÓN PRINCIPAL ========== -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo-container">
+            <img src="assets/imagenes/logo_azul.png" width="150px" alt="Siam Logo" class="logo-img" />
+        </a>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#documentos">Documentos</a></li>
+            <li><a href="#proceso">Proceso</a></li>
+            <li><a href="#demostracion">Demostración</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Documentación Automática</h1>
+                    <p>Generación de documentos, constancias y reportes oficiales requeridos por las normas del programa
+                        Vaso de Leche.</p>
+                    <div class="hero-actions">
+                        <a href="https://wa.me/51996909051?text=hola,%20deseo%20más%20información%20sobre%20el%20vaso%20de%20leche"
+                            class="btn" target="_blank" rel="noopener">Contáctanos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documents Section -->
+    <section class="documents" id="documentos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Documentos Automatizados</h2>
+                <p>Nuestro sistema genera toda la documentación requerida por las normativas del programa Vaso de Leche.
+                </p>
+            </div>
+            <div class="documents-grid">
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h3>Actas de Entrega</h3>
+                    <p>Documentos oficiales de distribución de alimentos con firmas digitales y sellos institucionales.
+                    </p>
+                </div>
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Constancias de Beneficiario</h3>
+                    <p>Certificados oficiales que acreditan la condición de beneficiario en el programa.</p>
+                </div>
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Reportes Estadísticos</h3>
+                    <p>Informes detallados de gestión, cobertura y distribución para autoridades competentes.</p>
+                </div>
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <h3>Informes Financieros</h3>
+                    <p>Documentación contable y de ejecución presupuestaria requerida por los órganos de control.</p>
+                </div>
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Planillas de Distribución</h3>
+                    <p>Formatos oficiales de entrega con información detallada de beneficiarios e insumos.</p>
+                </div>
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>Expedientes de Pecosa</h3>
+                    <p>Documentación completa de procesos de control y sanción administrativa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="proceso">
+        <div class="container">
+            <div class="section-title">
+                <h2>Proceso de Generación Automática</h2>
+                <p>Nuestro sistema sigue un flujo optimizado para la creación de documentación oficial.</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Selección de Plantilla</h3>
+                    <p>Elección del tipo de documento requerido según necesidades específicas.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Datos Automatizados</h3>
+                    <p>Integración automática de información desde la base de datos del sistema.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Personalización</h3>
+                    <p>Ajuste de campos específicos y adición de información complementaria.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Generación y Firma</h3>
+                    <p>Creación del documento con firmas digitales y sellos oficiales automáticos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo">
+        <div class="container">
+            <div class="demo-content">
+                <div class="demo-text">
+                    <h2>Documentos Oficiales y Normativos</h2>
+                    <p>Nuestro sistema genera documentación 100% ajustada a los requisitos normativos del programa Vaso
+                        de Leche.</p>
+                    <p>Características de los documentos generados:</p>
+                    <ul>
+                        <li>Ajuste automático a formatos oficiales municipales</li>
+                        <li>Inclusión de logos, sellos y membrete oficial</li>
+                        <li>Numeración automática y consecutiva</li>
+                        <li>Firmas digitales de responsables autorizados</li>
+                        <li>Marcas de agua y medidas de seguridad documentaria</li>
+                        <li>Registro automático en sistema de archivo</li>
+                    </ul>
+                    <p>Todos los documentos quedan registrados en el sistema con timestamp para auditoría.</p>
+                </div>
+                <div class="demo-image">
+                    <img src="assets/imagenes/documentacion-automatica/documentos-oficiales.jpg"
+                        alt="Documentos Oficiales Generados">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formats Section -->
+    <section class="formats">
+        <div class="container">
+            <div class="section-title">
+                <h2>Formatos de Exportación</h2>
+                <p>Nuestro sistema permite exportar documentación en múltiples formatos según sus necesidades.</p>
+            </div>
+            <div class="formats-container">
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>PDF</h3>
+                    <p>Documentos listos para imprimir con máxima calidad y seguridad.</p>
+                </div>
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <h3>Excel</h3>
+                    <p>Datos tabulares exportables para análisis y procesamiento externo.</p>
+                </div>
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-word"></i>
+                    </div>
+                    <h3>Word</h3>
+                    <p>Documentos editables para personalizaciones adicionales.</p>
+                </div>
+                <div class="format-card">
+                    <div class="format-icon">
+                        <i class="fas fa-file-csv"></i>
+                    </div>
+                    <h3>CSV</h3>
+                    <p>Datos estructurados para integración con otros sistemas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería de Imágenes -->
+    <section class="image-gallery" id="demostracion">
+        <div class="container">
+            <div class="section-title">
+                <h2>MUESTRA DE GENERADOR DE DOCUMENTOS VASO DE LECHE:</h2>
+                <p>Ejemplos de documentos generados por nuestro sistema</p>
+            </div>
+            <div class="gallery-container">
+                <div class="gallery-item" data-index="0">
+                    <img src="assets/imagenes/documentacion-automatica/constancia-beneficiario1.png" alt="Constancia de Beneficiario">
+                    <div class="gallery-caption">Constancia de Beneficiario</div>
+                </div>
+                <div class="gallery-item" data-index="1">
+                    <img src="assets/imagenes/documentacion-automatica/acta-entrega2.png" alt="Acta de Entrega">
+                    <div class="gallery-caption">Acta de Entrega</div>
+                </div>
+                <div class="gallery-item" data-index="2">
+                    <img src="assets/imagenes/documentacion-automatica/reporte-estadistico3.png" alt="Reporte Estadístico">
+                    <div class="gallery-caption">Reporte Estadístico</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para imágenes -->
+    <div class="modal" id="imageModal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <button class="modal-nav modal-prev" id="modalPrev">&lt;</button>
+        <button class="modal-nav modal-next" id="modalNext">&gt;</button>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Beneficios de la Documentación Automática</h2>
+                <p>La generación automática de documentos proporciona importantes ventajas para la gestión municipal.
+                </p>
+            </div>
+            <ul class="benefits-list">
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h3>Estandarización</h3>
+                        <p>Garantiza que todos los documentos cumplan con los formatos y requisitos oficiales.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h3>Ahorro de Tiempo</h3>
+                        <p>Reduce el tiempo de creación de documentos de horas a segundos.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h3>Prevención de Errores</h3>
+                        <p>Elimina errores manuales en la redacción y cálculo de datos.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h3>Trazaibilidad Completa</h3>
+                        <p>Registro automático de todos los documentos generados con sus metadatos.</p>
+                    </div>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h3>Cumplimiento Normativo</h3>
+                        <p>Asegura el cumplimiento de todas las disposiciones legales y administrativas.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="contacto">
+        <div class="container">
+            <h2>¿Necesita un sistema automatizado de documentación?</h2>
+            <p>Contáctenos hoy mismo para una demostración personalizada y descubra cómo nuestro sistema puede optimizar
+                la generación de documentos en su municipalidad.</p>
+            <a href="https://wa.me/51996909051?text=Hola,%20deseo%20más%20información%20sobre%20el%20sistema%20de%20documentación%20automática"
+                class="btn">
+                <i class="fas fa-calendar-check"></i> Solicitar Demostración
+            </a>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>SIAMsoft</h3>
+                    <p>
+                        Sistema integral de Administración Municipal-Transformando la
+                        gestión pública local a través de tecnología moderna y adaptada.
+                    </p>
+                    <div class="footer-social-links">
+                        <a href="https://www.facebook.com/SIAMSoftSftwareparamunicipalidades/" target="_blank"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/roberto-centeno-chicani-027a6612a/?originalSubdomain=pe"
+                            target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://x.com/siamsoft" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Módulos</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="https://nixi32.github.io/gestion_tributaria/pagina_siam/index.html">Gestión
+                                Tributaria y Caja</a>
+                        </li>
+                        <li>
+                            <a href="https://shisui9569.github.io/urbano/catastro/cat.html">Catastro Urbano</a>
+                        </li>
+                        <li>
+                            <a href="https://shisui9569.github.io/planilla/planillas/index.html">Control de Asistencia y
+                                Planillas</a>
+                        </li>
+                        <li>
+                            <a href="https://franklindevs.github.io/Proyectos/tramite-documentario/index.html">Trámite
+                                Documentario</a>
+                        </li>
+                        <li><a href="#">Archivo Central</a></li>
+                        <li><a href="#">Vaso de Leche</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#documentos">Documentos</a></li>
+                        <li><a href="#proceso">Proceso</a></li>
+                        <li><a href="#demostracion">Demostracion</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i> Pasaje Washintong Nº107
+                        Urb.Amauta
+                    </p>
+                    <p><i class="fas fa-phone"></i> +51 996 909 051</p>
+                    <p><i class="fas fa-envelope"></i> rs.siamsoft@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 SIAMsoft. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+        // ========== FUNCIONALIDAD DE LA GALERÍA DE IMÁGENES ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.getElementById('modalClose');
+            const modalPrev = document.getElementById('modalPrev');
+            const modalNext = document.getElementById('modalNext');
+            
+            let currentIndex = 0;
+            
+            // Abrir modal al hacer clic en una imagen
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    currentIndex = parseInt(this.getAttribute('data-index'));
+                    updateModalImage();
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Cerrar modal
+            modalClose.addEventListener('click', function() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Navegación entre imágenes
+            modalPrev.addEventListener('click', function() {
+                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+                updateModalImage();
+            });
+            
+            modalNext.addEventListener('click', function() {
+                currentIndex = (currentIndex + 1) % galleryItems.length;
+                updateModalImage();
+            });
+            
+            // Cerrar modal al hacer clic fuera de la imagen
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Navegación con teclado
+            document.addEventListener('keydown', function(e) {
+                if (modal.classList.contains('active')) {
+                    if (e.key === 'Escape') {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    } else if (e.key === 'ArrowLeft') {
+                        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+                        updateModalImage();
+                    } else if (e.key === 'ArrowRight') {
+                        currentIndex = (currentIndex + 1) % galleryItems.length;
+                        updateModalImage();
+                    }
+                }
+            });
+            
+            function updateModalImage() {
+                const imgSrc = galleryItems[currentIndex].querySelector('img').getAttribute('src');
+                const imgAlt = galleryItems[currentIndex].querySelector('img').getAttribute('alt');
+                modalImage.setAttribute('src', imgSrc);
+                modalImage.setAttribute('alt', imgAlt);
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+
+                    // Cerrar menú móvil si está abierto
+                    if (navLinks.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                }
+            });
+        });
+
+        // Sticky navbar
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ========== CONFIGURACIÓN DEL MENÚ HAMBURGUESA ==========
+        const hamburgerMenu = document.getElementById("hamburger-menu");
+        const navLinks = document.getElementById("nav-links");
+
+        // Función para alternar el menú
+        function toggleMenu() {
+            hamburgerMenu.classList.toggle("active");
+            navLinks.classList.toggle("active");
+            document.body.style.overflow = navLinks.classList.contains("active") ? "hidden" : "";
+        }
+
+        // Event listener para el menú hamburguesa
+        if (hamburgerMenu && navLinks) {
+            hamburgerMenu.addEventListener("click", function (e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // Cerrar menú al hacer clic en un enlace
+            const navItems = navLinks.querySelectorAll("a");
+            navItems.forEach(item => {
+                item.addEventListener("click", () => {
+                    hamburgerMenu.classList.remove("active");
+                    navLinks.classList.remove("active");
+                    document.body.style.overflow = "";
+                });
+            });
+
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener("click", (event) => {
+                const isClickInsideNav = navLinks.contains(event.target);
+                const isClickOnHamburger = hamburgerMenu.contains(event.target);
+
+                if (!isClickInsideNav && !isClickOnHamburger && navLinks.classList.contains("active")) {
+                    hamburgerMenu.classList.remove("active");
+                    navLinks.classList.remove("active");
+                    document.body.style.overflow = "";
+                }
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add fade-in animation to sections
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section, index) => {
+                section.classList.add('fade-in');
+                section.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            // Ajustar barra social en móviles
+            function adjustSocialBar() {
+                const socialBarContainer = document.querySelector('.social-bar-container');
+                if (window.innerWidth <= 768) {
+                    socialBarContainer.style.bottom = '20px';
+                    socialBarContainer.style.top = 'auto';
+                } else {
+                    socialBarContainer.style.bottom = '';
+                    socialBarContainer.style.top = '50%';
+                }
+            }
+
+            // Ejecutar al cargar y al redimensionar
+            adjustSocialBar();
+            window.addEventListener('resize', adjustSocialBar);
+        });
+    </script>
+</body>
+
+</html>
